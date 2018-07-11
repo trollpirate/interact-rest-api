@@ -29,7 +29,7 @@ public class Report {
     private Long toUserId;
 
     @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss")
     @CreatedDate
     private Date createdAt;
 
@@ -45,17 +45,27 @@ public class Report {
     private String eventName;
 
     @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss")
     @Column(nullable = false)
     private Date eventDate;
 
     private boolean isAnonymous;
 
     @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss")
     private Date acknowledgementDate;
 
     private boolean isAcknowledged;
+
+    private int type;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public Long getId() {
         return id;

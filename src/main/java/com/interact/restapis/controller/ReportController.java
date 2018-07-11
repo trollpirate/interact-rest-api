@@ -32,7 +32,7 @@ public class ReportController {
     public ResponseEntity<Report> addReport(@RequestBody Report report) {
         Report report1 = reportService.addReport(report);
         if(report1 == null)
-            return new ResponseEntity<>(report1, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(report, HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(report1, HttpStatus.OK);
     }
 
