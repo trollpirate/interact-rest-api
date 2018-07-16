@@ -21,6 +21,9 @@ public class UserService {  //TODO Add other USER functions PRIORITY - HIGH
 
     /* get all customers */
     public List<User> getAllUser() {
+        System.out.println(userRepository.findAll());
+
+        System.out.println("anjomav");
         return userRepository.findAll();
     }
 
@@ -35,6 +38,7 @@ public class UserService {  //TODO Add other USER functions PRIORITY - HIGH
     }
 
     public User getUserByEmail(String email) {
+        String emailid = email.toUpperCase();
         return userRepository.getUserByEmail(email);
     }
 

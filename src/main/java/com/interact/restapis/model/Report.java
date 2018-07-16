@@ -22,10 +22,10 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "from_user_id", nullable = false)
+    @Column(name = "from_user_id")
     private Long fromUserId;
 
-    @Column(name = "to_user_id", nullable = false)
+    @Column(name = "to_user_id")
     private Long toUserId;
 
     @Temporal(TemporalType.DATE)
