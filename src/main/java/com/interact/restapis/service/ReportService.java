@@ -2,6 +2,7 @@ package com.interact.restapis.service;
 
 import com.interact.restapis.model.Report;
 import com.interact.restapis.repository.ReportRepository;
+import com.interact.restapis.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,9 @@ public class ReportService {
 
     @Autowired
     private ReportRepository reportRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     /*get all reports */
     public List<Report> getAllReports(){
@@ -25,6 +29,11 @@ public class ReportService {
 
     /*add a report*/
     public Report addReport(Report report){
+//        UserService userService = new UserService();
+        String fromEmail = userRepository.getOne(report.getFromUserId()).getEmail();
+        String toEmail = userRepository.getOne(report.getToUserId()).getEmail();
+        report.setFromUserEmail(fromEmail);
+        report.setToUserEmail(toEmail);
         return reportRepository.save(report);
     }
 

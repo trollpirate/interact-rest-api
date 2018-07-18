@@ -28,6 +28,12 @@ public class Report {
     @Column(name = "to_user_id")
     private Long toUserId;
 
+    @Column(name = "to_user_email")
+    private String toUserEmail;
+
+    @Column(name = "from_user_email")
+    private String fromUserEmail;
+
     @Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss")
     @CreatedDate
@@ -161,5 +167,21 @@ public class Report {
 
     public void setAcknowledged(boolean acknowledged) {
         isAcknowledged = acknowledged;
+    }
+
+    public String getToUserEmail() {
+        return toUserEmail;
+    }
+
+    public void setToUserEmail(String toUserEmail) {
+        this.toUserEmail = toUserEmail;
+    }
+
+    public String getFromUserEmail() {
+        return fromUserEmail;
+    }
+
+    public void setFromUserEmail(String fromUserEmail) {
+        this.fromUserEmail = fromUserEmail;
     }
 }
