@@ -2,6 +2,7 @@ package com.interact.restapis.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import java.util.List;
 @Table (name = "user")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class User {
+public class User   {
 
     @Id
     @Column(name = "id")
@@ -28,6 +29,7 @@ public class User {
     private String email;
 
     @Column(nullable = false)
+    @Value("${db.password}")
     private String password;
 
     @OneToMany(cascade = CascadeType.ALL, targetEntity = Report.class)
