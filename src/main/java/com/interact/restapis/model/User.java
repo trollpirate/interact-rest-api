@@ -38,6 +38,14 @@ public class User {
     @JoinColumn(name = "from_user_id")
     private List<Report> reportSentList;
 
+    public User(User user){
+        super();
+        this.email = user.email;
+        this.password = user.password;
+        this.firstName = user.firstName;
+        this.lastName = user.lastName;
+    }
+
     public Long getId() {
         return id;
     }
