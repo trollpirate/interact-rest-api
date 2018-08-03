@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table (name = "user")
@@ -38,12 +39,36 @@ public class User {
     @JoinColumn(name = "from_user_id")
     private List<Report> reportSentList;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_roles",
+    joinColumns = @JoinColumn(name = "user_id"),
+    inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
+
+    public User(){
+        super();
+        this.email = "";
+        this.password = "";
+        this.firstName = "";
+        this.lastName = "";
+        this.roles = null;
+    }
+
     public User(User user){
         super();
         this.email = user.email;
         this.password = user.password;
         this.firstName = user.firstName;
         this.lastName = user.lastName;
+        this.roles = user.roles;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public Long getId() {

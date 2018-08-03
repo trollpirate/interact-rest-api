@@ -1,18 +1,23 @@
 package com.interact.restapis.service;
 
 import com.interact.restapis.model.Report;
+import com.interact.restapis.model.Role;
 import com.interact.restapis.model.User;
 import com.interact.restapis.repository.ReportRepository;
+import com.interact.restapis.repository.RoleRepository;
 import com.interact.restapis.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service(value = "UserService")
 public class UserService {  //TODO Add other USER functions PRIORITY - HIGH
@@ -22,6 +27,12 @@ public class UserService {  //TODO Add other USER functions PRIORITY - HIGH
 
     @Autowired
     private ReportRepository reportRepository;
+
+    @Autowired
+    private PasswordEncoder userPasswordEncoder;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
 //    @Override
 //    public UserDetails loadUserByUsername(String id){
@@ -33,20 +44,20 @@ public class UserService {  //TODO Add other USER functions PRIORITY - HIGH
 //        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), getAuthorities());
 //    }
 
-    private List getAuthorities(){
-        return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
-    }
+
 
     /* get all customers */
     public List<User> getAllUser() {
         System.out.println(userRepository.findAll());
-
-        System.out.println("anjomav");
         return userRepository.findAll();
     }
 
     /*to save a user*/
     public User addUser(User user){
+        Set<Role> userRole = new HashSet<>();
+        userRole.add(roleRepository.findByName("USER"));
+        user.setRoles(userRole);
+        user.setPassword(userPasswordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 

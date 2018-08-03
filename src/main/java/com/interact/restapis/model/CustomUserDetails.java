@@ -1,20 +1,40 @@
 package com.interact.restapis.model;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
+
+/**
+ * This class is UserDetailsService of OAuth2 security it maps users with OAuth
+ * userDetails object and enriches them with authentication and authorization
+ * features
+ *
+ * @author Nalin Kamboj
+ * @version 1.0
+ * @since 02-08-2018
+ */
 
 public class CustomUserDetails extends User implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
-    String ROLE = "ROLE_USER";  //Temporary -> all users, in future -> multiple roles
+    String ROLE_PREFIX = "ROLE_";  //Temporary -> all users, in future -> multiple roles
 
     Collection<? extends GrantedAuthority> authorities;
 
     public CustomUserDetails (final User user){
         super(user);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles()
+                .stream()
+                .map(role -> new SimpleGrantedAuthority(ROLE_PREFIX + role.getName()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -45,11 +65,6 @@ public class CustomUserDetails extends User implements UserDetails {
     @Override
     public Long getId(){
         return super.getId();
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities; //WORK FROM HERE!!!!!!
     }
 
     @Override
