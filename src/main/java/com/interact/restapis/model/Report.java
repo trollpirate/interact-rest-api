@@ -2,19 +2,21 @@ package com.interact.restapis.model;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.DateSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /* TODO Add LOCALE support for DATE objects. Priority - LOW */
 
 @Entity
 @Table (name = "report")
 @EntityListeners(AuditingEntityListener.class)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Report {
 
     @Id
@@ -61,9 +63,18 @@ public class Report {
     @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss")
     private Date acknowledgementDate;
 
-    private boolean isAcknowledged;
+    @OneToMany(cascade = CascadeType.ALL, targetEntity = Action.class)
+    @JoinColumn(name = "report_id")
+    private List<Action> actionList;
+
+    @Value("${some.key:0}")
+    private int rating; //Range 0 to 4
 
     private int type;
+
+    /*
+    Getter and setter methods...
+     */
 
     public int getType() {
         return type;
@@ -161,12 +172,12 @@ public class Report {
         this.acknowledgementDate = acknowledgementDate;
     }
 
-    public boolean isAcknowledged() {
-        return isAcknowledged;
+    public int getRating() {
+        return rating;
     }
 
-    public void setAcknowledged(boolean acknowledged) {
-        isAcknowledged = acknowledged;
+    public void setRating(int rating1) {
+        rating = rating1;
     }
 
     public String getToUserEmail() {
@@ -183,5 +194,13 @@ public class Report {
 
     public void setFromUserEmail(String fromUserEmail) {
         this.fromUserEmail = fromUserEmail;
+    }
+
+    public List<Action> getActionList() {
+        return actionList;
+    }
+
+    public void setActionList(List<Action> actionList) {
+        this.actionList = actionList;
     }
 }

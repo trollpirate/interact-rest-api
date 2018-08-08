@@ -23,8 +23,10 @@ public class ReportController {
 
     //Get single report
     @GetMapping("/interactions/{id}")
-    public Report getReport(@PathVariable Long id) {
-        return reportService.getReport(id);
+    public ResponseEntity<Report> getReport(@PathVariable Long id) {
+        if(reportService.getReport(id) == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(reportService.getReport(id), HttpStatus.OK);
     }
 
     @PostMapping("/interactions")
@@ -36,10 +38,16 @@ public class ReportController {
     }
 
     @PutMapping("/interactions/{id}")
-    public ResponseEntity<Report> updateReport(@RequestBody Report report, @PathVariable(value = "id") Long id) {
-        if(reportService.updateReport(report, id) == null)
+    public ResponseEntity<Report> updateReport(@RequestBody Report report, @PathVariable Long id) {
+//        System.out.println("BLAAA \n\n" + reportService.getReport(id).getObservation() + "\nSENT REPORT: " + report.getId());
+        if(reportService.getReport(id) == null)
             return new ResponseEntity<>(report, HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(HttpStatus.OK);
+        if (report.getId() == null)
+            report.setId(id);
+        if(reportService.updateReport(report, id) == null)
+            return new ResponseEntity<>(report, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(report, HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/interactions/{id}")
