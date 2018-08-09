@@ -23,8 +23,11 @@ public class ActionController {
     }
 
     @GetMapping("/actions/{id}")
-    public Action getAction(@PathVariable Long id){
-        return actionService.getAction(id);
+    public ResponseEntity<Action> getAction(@PathVariable Long id){
+        Action action = actionService.getAction(id);
+        if(action == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(action, HttpStatus.OK);
     }
 
     @PostMapping("/actions")

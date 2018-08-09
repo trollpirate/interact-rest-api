@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ActionService {
@@ -20,7 +21,7 @@ public class ActionService {
 
     //Get one action
     public Action getAction(Long id) {
-        return actionRepository.getOne(id);
+        return actionRepository.findById(id).orElse(null);
     }
 
     //Add an action
@@ -30,14 +31,16 @@ public class ActionService {
 
     //Update an action
     public Action updateAction(Action action, Long id){
-        if(actionRepository.getOne(id) == null)
+        Optional<Action> actionOptional = actionRepository.findById(id);
+        if(!actionOptional.isPresent())
             return null;
         return actionRepository.save(action);
     }
 
     //Delete an action
     public boolean deleteAction(Long id){
-        if(actionRepository.getOne(id) == null) {
+        Optional<Action> actionOptional = actionRepository.findById(id);
+        if(!actionOptional.isPresent()) {
             return false;
         }
         actionRepository.deleteById(id);

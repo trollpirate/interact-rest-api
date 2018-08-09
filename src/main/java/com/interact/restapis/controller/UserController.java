@@ -22,15 +22,17 @@ public class UserController {
     //Get all users
     @GetMapping
     public List<User> getAllUsers(){
-        System.out.println("called");
         return userService.getAllUser();
     }
 
 
     //Get single user
     @GetMapping("/{id}")
-    public User getUser(@PathVariable Long id) throws Exception{
-        return userService.getUser(id);
+    public ResponseEntity<User> getUser(@PathVariable Long id) throws Exception{
+        User user = userService.getUser(id);
+        if(user == null)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @ExceptionHandler({NumberFormatException.class, ConversionFailedException.class, Exception.class})
@@ -41,7 +43,6 @@ public class UserController {
     //Get single user using EMAIL ID
     @GetMapping("/email/{emailid}")
     public User getUserByEmail(@PathVariable(value = "emailid") String email) {
-        System.out.println("callled");
         return userService.getUserByEmail(email);
     }
 
@@ -61,8 +62,8 @@ public class UserController {
     public ResponseEntity<User> addUser(@RequestBody User user){
         User u = userService.addUser(user);
         if(u == null)
-            return new ResponseEntity<User>(user, HttpStatus.NOT_FOUND);
-        return new ResponseEntity<User>(u, HttpStatus.CREATED);
+            return new ResponseEntity<>(user, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(u, HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/{id}")
@@ -75,9 +76,9 @@ public class UserController {
     @DeleteMapping("/users/{id}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable long id) {
         if(!userService.deleteUser(id)) {
-            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

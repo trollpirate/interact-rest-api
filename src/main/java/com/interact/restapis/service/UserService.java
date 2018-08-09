@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {  //TODO Add other USER functions PRIORITY - HIGH
@@ -21,9 +22,6 @@ public class UserService {  //TODO Add other USER functions PRIORITY - HIGH
 
     /* get all customers */
     public List<User> getAllUser() {
-        System.out.println(userRepository.findAll());
-
-        System.out.println("anjomav");
         return userRepository.findAll();
     }
 
@@ -34,7 +32,8 @@ public class UserService {  //TODO Add other USER functions PRIORITY - HIGH
 
     /*get a user by id */
     public User getUser(Long Id){
-        return userRepository.getOne(Id);
+        Optional<User> optionalUser = userRepository.findById(Id);
+        return optionalUser.orElse(null);
     }
 
     public User getUserByEmail(String email) {
@@ -43,14 +42,16 @@ public class UserService {  //TODO Add other USER functions PRIORITY - HIGH
     }
 
     public User updateUser(User user, Long id){
-        if(userRepository.getOne(id) == null)
+        Optional<User> userOptional = userRepository.findById(id);
+        if(!userOptional.isPresent())
             return null;
         return userRepository.save(user);
     }
 
     /* delete a user */
     public boolean deleteUser(Long id){
-        if(userRepository.getOne(id) == null)
+        Optional<User> optionalUser = userRepository.findById(id);
+        if(!optionalUser.isPresent())
             return false;
 
         //Fetch and delete all reports (Inter-Actions) related to the user

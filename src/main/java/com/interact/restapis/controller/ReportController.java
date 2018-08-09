@@ -44,7 +44,7 @@ public class ReportController {
             return new ResponseEntity<>(report, HttpStatus.NOT_FOUND);
         if (report.getId() == null)
             report.setId(id);
-        if(reportService.updateReport(report, id) == null)
+        if(reportService.updateReport(report, id) != null)
             return new ResponseEntity<>(report, HttpStatus.OK);
         else
             return new ResponseEntity<>(report, HttpStatus.BAD_REQUEST);
