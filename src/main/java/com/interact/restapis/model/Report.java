@@ -36,8 +36,8 @@ public class Report {
     @Column(name = "from_user_email")
     private String fromUserEmail;
 
-    @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss")
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     @CreatedDate
     private Date createdAt;
 
@@ -52,15 +52,15 @@ public class Report {
     @Column(nullable = false)
     private String eventName;
 
-    @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss")
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     @Column(nullable = false)
     private Date eventDate;
 
     private boolean isAnonymous;
 
-    @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss")
+    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private Date acknowledgementDate;
 
     @OneToMany(cascade = CascadeType.ALL, targetEntity = Action.class)

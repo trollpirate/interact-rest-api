@@ -21,9 +21,9 @@ public class Action {
     @Column(name = "report_id")
     private Long reportId;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
-    @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private Date createdAt;
 
     private String actionDescription;
